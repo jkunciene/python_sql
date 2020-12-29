@@ -2,7 +2,7 @@ import pymysql
 
 
 class Datab():
-    def __init__(self, databaseName, servername, username, password):
+    def __init__(self,databaseName,servername,username,password):
             self.n=databaseName
             db = pymysql.connect(host=servername, user=username, passwd=password)
             cursor = db.cursor()
@@ -10,35 +10,37 @@ class Datab():
             cursor.execute("CREATE DATABASE IF NOT EXISTS {};".format(self.n))
             cursor.execute("use {};".format(self.n))
 
-    def addTable(self, tableName, **columns):
-        sql = "CREATE TABLE IF NOT EXISTS " + tableName + "( "
-        for c,t in columns.items():
-                sql += "%s %s, " % (c,t)
-        sql = sql[:-2]+");"
-        self.cursor.execute(sql)
+    def addTable(self,tableName,**columns):
+            sql="CREATE TABLE IF NOT EXISTS " + tableName+ "( "
+            for c,t in columns.items():
+                    sql += "%s %s, " % (c,t)
+            sql=sql[:-2]+");"
+            self.cursor.execute(sql)
+            print("addTable pavyko")
 
     def addElement(self,tableName,**values):
-        sql = "INSERT INTO " +tableName+" ("
-        columns=[]
-        value=[]
-        for k,v in values.items():
-                columns.append(k)
-                value.append(v)
-        for i in columns:
-            sql+="%s, " % i
+            sql = "INSERT INTO " +tableName+" ("
+            columns=[]
+            value=[]
+            for k,v in values.items():
+                    columns.append(k)
+                    value.append(v)
+            for i in columns:
+                sql+="%s, " % i
             sql = sql[:-2]+") VALUES ("
-        for v in value:
-                sql+="'%s', " % v
-        sql=sql[:-2]+");"
-        self.cursor.execute(sql)
+            for v in value:
+                    sql+="'%s', " % v
+            sql=sql[:-2]+");"
+            print("addElement veikia")
+            self.cursor.execute(sql)
 
     def viewTable(self, tableName):
-        self.cursor.execute("SELECT * FROM %s" % tableName)
-        print(self.cursor.fetchall())
+            self.cursor.execute("SELECT * from %s" % tableName)
+            print(self.cursor.fetchall())
 
 
 newdb = Datab("second_with_python","localhost","root", "")
-newdb.addTable("newTable", Id="int NOT NULL AUTO_INCREMENT PRIMARY KEY", First="varchar(40)", Last="varchar(40)")
+newdb.addTable("newTable", Id="integer NOT NULL AUTO_INCREMENT PRIMARY KEY",First="varchar(40)",Last="varchar(40)")
 newdb.addElement("newTable",First="David",Last="Backer")
-# newdb.addElement("newTable",First="Jolita",Last="Kunciene")
+newdb.addElement("newTable",First="Jolita",Last="Kunciene")
 newdb.viewTable("newTable")
