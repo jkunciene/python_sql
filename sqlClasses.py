@@ -5,10 +5,12 @@ class Datab():
     def __init__(self,databaseName,servername,username,password):
             self.n=databaseName
             db = pymysql.connect(host=servername, user=username, passwd=password)
+            self.db=db
             cursor = db.cursor()
             self.cursor = cursor
             cursor.execute("CREATE DATABASE IF NOT EXISTS {};".format(self.n))
             cursor.execute("use {};".format(self.n))
+
 
     def addTable(self,tableName,**columns):
             sql="CREATE TABLE IF NOT EXISTS " + tableName+ "( "
@@ -31,16 +33,16 @@ class Datab():
             for v in value:
                     sql+="'%s', " % v
             sql=sql[:-2]+");"
-            print("addElement veikia")
             self.cursor.execute(sql)
+            self.db.commit()
+
 
     def viewTable(self, tableName):
             self.cursor.execute("SELECT * from %s" % tableName)
             print(self.cursor.fetchall())
 
-
 newdb = Datab("second_with_python","localhost","root", "")
-newdb.addTable("newTable", Id="integer NOT NULL AUTO_INCREMENT PRIMARY KEY",First="varchar(40)",Last="varchar(40)")
+newdb.addTable("newTable", Id="int NOT NULL AUTO_INCREMENT PRIMARY KEY",First="varchar(40)",Last="varchar(40)")
 newdb.addElement("newTable",First="David",Last="Backer")
 newdb.addElement("newTable",First="Jolita",Last="Kunciene")
 newdb.viewTable("newTable")
