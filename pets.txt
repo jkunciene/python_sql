@@ -2,3 +2,4 @@
 34,princess,female,corgie,brown,2
 35,hunter,male,yellow lab,yellow,1
 36,mary,female,black lab,black,3
+34,clere,female,boxer,brown,4
